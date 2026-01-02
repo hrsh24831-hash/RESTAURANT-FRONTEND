@@ -1,4 +1,4 @@
-const API = "https://restbackendfinal.onrender.com/";
+const API = "https://restbackendfinal.onrender.com";
 
 
 const token = localStorage.getItem("token");
@@ -1000,6 +1000,7 @@ function loadDailyStats() {
 setInterval(() => {
   loadDailyStats();
 }, 5000);
+
 
 
 
