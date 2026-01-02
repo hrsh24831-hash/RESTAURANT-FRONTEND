@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Meal is Cooking! | CuisineOS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+    
+    body { 
+      font-family: 'Plus+Jakarta+Sans', sans-serif; 
+      background: #fffcf9; /* Creamy warm background */
+    }
+
+    /* The Liquid Progress Bar */
+    #progressFill {
+      background: linear-gradient(90deg, #f59e0b, #ef4444);
+      box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+      transition: width 1.5s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    /* The Point: A "Floating" White Ring */
+    #movingPoint {
+      transition: left 1.5s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    .status-icon {
+      transition: all 0.5s ease;
+      filter: grayscale(1) opacity(0.3);
+    }
+
+    .status-active .status-icon {
+      filter: grayscale(0) opacity(1);
+      transform: scale(1.2);
+    }
+
+    .status-active .status-label {
+      color: #b91c1c; /* Deep red */
+      font-weight: 800;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+  <div class="w-full max-w-xl bg-white p-10 rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-orange-50">
+    
+    <div class="text-center mb-12">
+      <div class="inline-block px-4 py-1.5 bg-orange-100 text-orange-700 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] mb-4">
+        Live from the Kitchen
+      </div>
+      <h1 class="text-3xl font-800 text-slate-900 tracking-tight">Your order is <span id="status" class="text-red-500">Preparing</span></h1>
+    </div>
+
+    <div class="relative py-12 mb-8">
+      
+      <div class="absolute top-1/2 left-0 w-full h-2 bg-orange-50 -translate-y-1/2 rounded-full"></div>
+      
+      <div id="progressFill" class="absolute top-1/2 left-0 h-2 -translate-y-1/2 rounded-full" style="width: 25%;"></div>
+
+      <div id="movingPoint" class="absolute top-1/2 left-[25%] -translate-x-1/2 -translate-y-1/2 z-20" style="left: 25%;">
+        <div class="w-7 h-7 bg-white rounded-full shadow-lg border-[3px] border-red-500 flex items-center justify-center">
+          <div class="w-2 h-2 bg-red-500 rounded-full animate-ping"></div>
+        </div>
+      </div>
+
+      <div class="relative flex justify-between px-1">
+        
+        <div id="node-RECEIVED" class="flex flex-col items-center gap-3">
+          <span class="status-icon text-2xl">📝</span>
+          <span class="status-label text-[10px] uppercase font-bold tracking-widest text-slate-400">Received</span>
+        </div>
+
+        <div id="node-PREPARING" class="flex flex-col items-center gap-3">
+          <span class="status-icon text-2xl">👨‍🍳</span>
+          <span class="status-label text-[10px] uppercase font-bold tracking-widest text-slate-400">Preparing</span>
+        </div>
+
+        <div id="node-PACKED" class="flex flex-col items-center gap-3">
+          <span class="status-icon text-2xl">🍱</span>
+          <span class="status-label text-[10px] uppercase font-bold tracking-widest text-slate-400">Packed</span>
+        </div>
+
+        <div id="node-OUT_FOR_DELIVERY" class="flex flex-col items-center gap-3">
+          <span class="status-icon text-2xl">🛵</span>
+          <span class="status-label text-[10px] uppercase font-bold tracking-widest text-slate-400">On Way</span>
+        </div>
+
+        <div id="node-DELIVERED" class="flex flex-col items-center gap-3">
+          <span class="status-icon text-2xl">🏠</span>
+          <span class="status-label text-[10px] uppercase font-bold tracking-widest text-slate-400">Arrived</span>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="bg-orange-50/50 rounded-3xl p-6 border border-orange-100 flex items-center gap-5">
+      <div class="relative">
+        <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-3xl shadow-sm rotate-3">🍲</div>
+        <div class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-lg shadow-md italic">Hot</div>
+      </div>
+      <div class="flex-1">
+        <h3 class="font-bold text-slate-800">Special North Indian Thali</h3>
+        <p class="text-xs text-slate-500">2 Sabzi, Dal Makhani, 3 Roti</p>
+      </div>
+      <div class="text-right">
+        <p class="text-xs text-slate-400 line-through">₹120</p>
+        <p class="text-lg font-800 text-slate-900">₹80</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    const posMap = {
+      'RECEIVED': 0,
+      'PREPARING': 25,
+      'PACKED': 50,
+      'OUT_FOR_DELIVERY': 75,
+      'DELIVERED': 100
+    };
+
+   function syncUI() {
+  const statusText = window.currentOrderStatus || "RECEIVED";
+  const percentage = posMap[statusText] ?? 0;
+
+  document.getElementById('movingPoint').style.left = `${percentage}%`;
+  document.getElementById('progressFill').style.width = `${percentage}%`;
+
+  Object.keys(posMap).forEach(key => {
+    const node = document.getElementById(`node-${key}`);
+    if (key === statusText) {
+      node.classList.add('status-active');
+    } else {
+      node.classList.remove('status-active');
+    }
+  });
+}
+
+
+    // Interval to refresh backend and sync UI
+    setInterval(() => {
+      if (typeof trackOrder === "function") trackOrder();
+      syncUI();
+    }, 3000);
+
+    setTimeout(syncUI, 500);
+  </script>
+
+  <script>const token = localStorage.getItem("token");
+if (!token) {
+  window.location.href = "login.html";
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Management | CuisineOS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+    
+    body { 
+      font-family: 'Plus+Jakarta+Sans', sans-serif; 
+      background: #fdfcfb; /* Soft warm paper-like background */
+    }
+
+    /* Glass Effect for Cards */
+    .management-card {
+      background: white;
+      border: 1px solid #f1f5f9;
+      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.04);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .management-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Input focus glow */
+    .input-focus {
+      transition: all 0.2s ease;
+      border: 1.5px solid #e2e8f0;
+    }
+
+    .input-focus:focus {
+      outline: none;
+      border-color: #f59e0b;
+      box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
+    }
+
+    /* Custom Header Gradient */
+    .header-bg {
+      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-20">
+
+  <header class="header-bg px-8 py-12 mb-10 text-center rounded-b-[3rem] shadow-2xl">
+    <h1 class="text-4xl font-800 text-white tracking-tight mb-2">🍽 Menu Management</h1>
+    <p class="text-slate-400 font-medium">Design and update your daily culinary offerings</p>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+
+    <section class="management-card p-8 rounded-[2.5rem]">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-orange-100 rounded-2xl flex items-center justify-center text-2xl shadow-sm">☀️</div>
+        <div>
+          <h2 class="text-xl font-bold text-slate-800">Daily Sabzi</h2>
+          <p class="text-[10px] uppercase tracking-widest font-bold text-orange-500">Today's Specials Only</p>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <input id="sabziName" 
+          class="input-focus w-full px-5 py-4 rounded-2xl bg-slate-50 text-slate-900 placeholder:text-slate-400 font-medium" 
+          placeholder="Sabzi name (e.g. Aloo Gobi)" />
+
+        <button onclick="addSabzi()" 
+          class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-4 rounded-2xl transition-all active:scale-95 shadow-lg shadow-orange-100">
+          Add Today’s Sabzi
+        </button>
+
+        <div class="flex items-start gap-2 bg-orange-50 p-4 rounded-xl border border-orange-100">
+          <span class="text-orange-600">⚠</span>
+          <p class="text-xs text-orange-700 leading-relaxed font-medium">
+            Items added here will be automatically archived at the end of the day.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="management-card p-8 rounded-[2.5rem]">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center text-2xl shadow-sm">💎</div>
+        <div>
+          <h2 class="text-xl font-bold text-slate-800">Permanent Items</h2>
+          <p class="text-[10px] uppercase tracking-widest font-bold text-emerald-600">Fixed Menu Favorites</p>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <input id="itemName" 
+          class="input-focus w-full px-5 py-4 rounded-2xl bg-slate-50 text-slate-900 placeholder:text-slate-400 font-medium" 
+          placeholder="Item name (e.g. Chhole Bhature)" />
+        
+        <div class="relative">
+          <span class="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 font-bold">₹</span>
+          <input id="itemPrice" type="number" 
+            class="input-focus w-full pl-10 pr-5 py-4 rounded-2xl bg-slate-50 text-slate-900 placeholder:text-slate-400 font-medium" 
+            placeholder="Price" />
+        </div>
+
+        <button onclick="addItem()" 
+          class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-2xl transition-all active:scale-95 shadow-lg shadow-emerald-100">
+          Add Permanent Item
+        </button>
+
+        <div class="flex items-start gap-2 bg-emerald-50 p-4 rounded-xl border border-emerald-100">
+          <span class="text-emerald-600">✔</span>
+          <p class="text-xs text-emerald-700 leading-relaxed font-medium">
+            These items will remain in your digital menu until manually removed.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="md:col-span-2 mt-4">
+      <div class="flex items-center justify-between mb-8 px-2">
+        <h2 class="text-2xl font-800 text-slate-900 tracking-tight">Active Digital Menu</h2>
+        <div class="flex items-center gap-2">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+          </span>
+          <p class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Live Status</p>
+        </div>
+      </div>
+
+      <div id="menuList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="animate-pulse bg-slate-100 h-24 rounded-3xl"></div>
+        <div class="animate-pulse bg-slate-100 h-24 rounded-3xl"></div>
+        <div class="animate-pulse bg-slate-100 h-24 rounded-3xl"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    loadMenu();
+  </script>
+
+</body>
+</html>

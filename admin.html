@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard | Arab Punjab</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap");
+    body { font-family: "Inter", sans-serif; }
+
+    .glass-panel {
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .order-card {
+      animation: slideIn .3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body class="bg-slate-50 min-h-screen flex">
+
+  <!-- SIDEBAR -->
+  <aside class="w-64 bg-slate-900 text-white hidden md:flex flex-col">
+    <div class="p-6 text-2xl font-bold bg-gradient-to-r from-orange-400 to-rose-400 bg-clip-text text-transparent">
+      Arab Punjab
+    </div>
+    <nav class="px-4 space-y-2">
+      <a class="block p-3 rounded-xl bg-white/10">📊 Dashboard</a>
+      <a href="admin-menu.html" class="block p-3 text-slate-400 hover:text-white">🍔 Menu</a>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="flex-1 overflow-y-auto">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-10 glass-panel px-8 py-4">
+      <h1 class="text-2xl font-bold">Admin Dashboard</h1>
+      <p class="text-sm text-slate-500">Live orders & kitchen status</p>
+    </header>
+
+    <!-- STATS -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-8">
+      <div class="bg-white p-4 rounded-xl shadow">
+        <p class="text-xs text-slate-400">Today's Orders</p>
+        <p id="statOrders" class="text-2xl font-bold">0</p>
+      </div>
+      <div class="bg-white p-4 rounded-xl shadow">
+        <p class="text-xs text-slate-400">Revenue</p>
+        <p class="text-2xl font-bold">₹<span id="statRevenue">0</span></p>
+      </div>
+      <div class="bg-white p-4 rounded-xl shadow">
+        <p class="text-xs text-slate-400">Pending</p>
+        <p id="statPending" class="text-2xl font-bold">0</p>
+      </div>
+      <div class="bg-white p-4 rounded-xl shadow">
+        <p class="text-xs text-slate-400">Delivered</p>
+        <p id="statDelivered" class="text-2xl font-bold">0</p>
+      </div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="p-8 space-y-12">
+
+      <section>
+        <h2 class="text-lg font-bold mb-4">🕒 Pending</h2>
+        <div id="pendingOrders" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold mb-4">🔥 In Progress</h2>
+        <div id="readyOrders" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold mb-4">✅ Delivered</h2>
+        <div id="completedOrders" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-80"></div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- SOCKET -->
+  <script>
+    const socket = io("http://localhost:5000");
+
+    socket.on("new-order", () => {
+      if (typeof playAdminSound === "function") playAdminSound();
+      if (typeof loadOrders === "function") loadOrders();
+      if (typeof loadDailyStats === "function") loadDailyStats();
+    });
+  </script>
+
+  <!-- APP LOGIC -->
+  <script src="app.js"></script>
+  <script src="auth.js"></script>
+
+  <!-- PAGE LOAD -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      if (typeof requireAdminAuth === "function") requireAdminAuth();
+      if (typeof loadOrders === "function") loadOrders();
+      if (typeof loadDailyStats === "function") loadDailyStats();
+    });
+  </script>
+
+</body>
+</html>

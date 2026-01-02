@@ -1,0 +1,179 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Build Your Thali | CuisineOS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap");
+    body { font-family: "Outfit", sans-serif; }
+
+    .thali-radio { display: none; }
+
+    .thali-radio:checked + .thali-card {
+      border-color: #f59e0b;
+      background-color: #fffbeb;
+      transform: translateY(-2px);
+    }
+
+    .thali-card {
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+   
+  </style>
+</head>
+
+<body class="bg-slate-50 min-h-screen pb-28">
+
+<header class="bg-white px-6 py-4 shadow-sm mb-6 sticky top-0 z-20">
+  <div class="max-w-md mx-auto flex items-center justify-between">
+    
+    <div class="flex items-center gap-3">
+      <span class="text-3xl">🍱</span>
+      <div>
+        <h1 class="text-xl font-800 text-slate-900 tracking-tight leading-none">Build Your Thali</h1>
+        <p class="text-slate-400 text-[10px] uppercase tracking-widest font-bold mt-1">CuisineOS Premium</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3">
+      
+      <a href="orders.html" class="group flex flex-col items-center transition-transform active:scale-90">
+        <div class="w-10 h-10 bg-slate-50 border border-slate-100 rounded-full flex items-center justify-center shadow-sm group-hover:bg-orange-50 group-hover:border-orange-100 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-500 group-hover:text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+        </div>
+        <span class="text-[9px] font-bold uppercase tracking-tighter text-slate-400 mt-1 group-hover:text-orange-600">My Orders</span>
+      </a>
+
+      <a href="account.html" class="group flex flex-col items-center transition-transform active:scale-90">
+        <div class="w-10 h-10 bg-slate-50 border border-slate-100 rounded-full flex items-center justify-center shadow-sm group-hover:bg-orange-50 group-hover:border-orange-100 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-500 group-hover:text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+        </div>
+        <span class="text-[9px] font-bold uppercase tracking-tighter text-slate-400 mt-1 group-hover:text-orange-600">Profile</span>
+      </a>
+
+    </div>
+  </div>
+</header>
+
+<main class="max-w-md mx-auto px-6">
+
+  <!-- THALI TYPE -->
+  <section class="mb-8">
+    <h2 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">
+      Choose Base
+    </h2>
+
+    <div class="grid gap-4">
+      <label>
+        <input type="radio" name="thali" checked onchange="selectThali('NORMAL')" class="thali-radio" />
+        <div class="thali-card bg-white p-5 rounded-3xl shadow-sm flex justify-between">
+          <div>
+            <h3 class="font-bold">Normal Thali</h3>
+            <p class="text-xs text-slate-500">2 Sabzi • No Paneer</p>
+          </div>
+          <span class="font-bold text-orange-600">₹70</span>
+        </div>
+      </label>
+
+      <label>
+        <input type="radio" name="thali" onchange="selectThali('SPECIAL')" class="thali-radio" />
+        <div class="thali-card bg-white p-5 rounded-3xl shadow-sm flex justify-between">
+          <div>
+            <h3 class="font-bold">Special Thali</h3>
+            <p class="text-xs text-slate-500">3 Sabzi • Paneer Allowed</p>
+          </div>
+          <span class="font-bold text-orange-600">₹80</span>
+        </div>
+      </label>
+    </div>
+  </section>
+
+  <!-- SABZI -->
+  <section class="mb-6">
+    <h2 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">
+      Select Sabzi
+    </h2>
+    <div id="menuArea" class="space-y-2"></div>
+  </section>
+
+  <!-- EXTRA ITEMS -->
+  <section class="mb-6">
+    <h2 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">
+      Add Extra Items
+    </h2>
+    <div id="itemsArea" class="space-y-3"></div>
+  </section>
+
+  <!-- INSTRUCTIONS -->
+ <label class="block text-sm font-semibold mb-1">
+  Cooking Instructions
+</label>
+
+<textarea
+  id="instructions"
+  placeholder="Any cooking instructions?"
+  class="w-full p-3 border rounded-xl"
+></textarea>
+
+
+
+
+
+
+  </section>
+
+  <!-- CHECKOUT SUMMARY -->
+  <section class="mb-8">
+    <h2 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">
+      Checkout Summary
+    </h2>
+
+    <div id="cartSummary"
+      class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 text-sm space-y-2">
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<div class="fixed bottom-0 left-0 right-0 bg-white border-t p-6">
+  <div class="max-w-md mx-auto flex items-center justify-between gap-4">
+    <div>
+      <p class="text-xs text-slate-400 font-bold uppercase">Total</p>
+      <p class="text-2xl font-bold">₹<span id="total">70</span></p>
+    </div>
+
+    <button id="placeOrderBtn"
+      onclick="placeOrder()"
+      class="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 rounded-2xl">
+      Place Order
+    </button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+  selectThali("NORMAL");
+  
+</script>
+
+<script src="auth.js"></script>
+<script>
+  requireUserAuth();
+</script>
+
+
+
+</body>
+</html>

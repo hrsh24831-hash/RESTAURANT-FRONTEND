@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal | CuisineOS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+    
+    body { 
+      font-family: 'Plus+Jakarta+Sans', sans-serif; 
+      background: radial-gradient(circle at top right, #1e293b, #0f172a); 
+    }
+
+    .admin-card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    .input-field {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .input-field:focus {
+      border-color: #f59e0b;
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
+      outline: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-primary:active { transform: scale(0.97); }
+  </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+  <div class="admin-card p-10 rounded-[3rem] w-full max-w-md">
+    
+    <div class="text-center mb-10">
+      <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-tr from-slate-700 to-slate-800 rounded-3xl mb-6 shadow-xl border border-white/5">
+        <span class="text-3xl">🔑</span>
+      </div>
+      <h2 class="text-3xl font-800 text-white tracking-tight">Admin Access</h2>
+      <p class="text-slate-400 mt-2 text-sm font-medium">Management Dashboard Login</p>
+    </div>
+
+    <div class="space-y-4">
+      
+      <div class="space-y-2">
+        <label class="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Admin Identity</label>
+        <input id="email" type="email" 
+          class="input-field w-full px-5 py-4 rounded-2xl text-white placeholder:text-slate-600" 
+          placeholder="admin@cuisineos.com" />
+      </div>
+
+      <button onclick="sendAdminOtp()" 
+        class="btn-primary w-full py-4 text-white font-bold rounded-2xl shadow-lg shadow-orange-900/20 mb-6">
+        Generate Secure OTP
+      </button>
+
+      <div class="flex items-center gap-4 py-4">
+        <div class="h-[1px] bg-slate-800 flex-1"></div>
+        <div class="w-2 h-2 bg-slate-700 rounded-full"></div>
+        <div class="h-[1px] bg-slate-800 flex-1"></div>
+      </div>
+
+      <div class="space-y-2">
+        <label class="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Verification Code</label>
+        <input id="otp" type="text" 
+          class="input-field w-full px-5 py-4 rounded-2xl text-white text-center text-xl tracking-[0.5em] font-bold placeholder:text-slate-600 placeholder:tracking-normal" 
+          placeholder="••••••" />
+      </div>
+
+      <button onclick="verifyAdminOtp()" 
+        class="w-full py-4 bg-white hover:bg-slate-100 text-slate-900 font-bold rounded-2xl transition-all active:scale-95">
+        Verify & Enter
+      </button>
+
+    </div>
+
+    <div class="mt-10 text-center">
+      <p class="text-slate-600 text-[10px] font-bold uppercase tracking-[0.2em]">
+        System Security Active
+      </p>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+  <script src="push-register.js"></script>
+
+</body>
+</html>
