@@ -1,4 +1,4 @@
-const API = "http://127.0.0.1:5000";
+const API = "https://my-restaurant-x9zw.onrender.com/";
 
 
 const token = localStorage.getItem("token");
@@ -1000,6 +1000,7 @@ function loadDailyStats() {
 setInterval(() => {
   loadDailyStats();
 }, 5000);
+
 
 
 
