@@ -1,7 +1,7 @@
 const API = "https://restbackendfinal.onrender.com";
 
 
-const token = localStorage.getItem("token");
+
 document.addEventListener("click", enableSound, { once: true });
 
 let soundEnabled = true;
@@ -1000,6 +1000,7 @@ function loadDailyStats() {
 setInterval(() => {
   loadDailyStats();
 }, 5000);
+
 
 
 
